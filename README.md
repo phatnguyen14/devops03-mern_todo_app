@@ -1,6 +1,6 @@
 # MERN Todo App — Docker Desktop
 
-Ứng dụng Todo MERN chạy hoàn toàn trên **Docker Desktop** (không cần VPS hay domain).
+Ứng dụng Todo MERN chạy trên **Docker Desktop**
 
 ## Yêu cầu
 
