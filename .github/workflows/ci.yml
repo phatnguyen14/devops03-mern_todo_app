@@ -1,0 +1,40 @@
+name: Docker CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  docker-compose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create environment file
+        run: cp .env.example .env
+
+      - name: Build and start stack
+        run: docker compose up -d --build
+
+      - name: Wait for services
+        run: sleep 30
+
+      - name: Health check backend
+        run: curl -f http://localhost:8000/api/health
+
+      - name: Health check frontend
+        run: curl -f http://localhost:8080
+
+      - name: Health check Prometheus
+        run: curl -f http://localhost:9090/-/ready
+
+      - name: Health check Grafana
+        run: curl -f http://localhost:3001/api/health
+
+      - name: Tear down stack
+        if: always()
+        run: docker compose down -v
